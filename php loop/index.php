@@ -195,20 +195,36 @@ echo "<br>";
 ?>
  <!-- #Q12 -->
 
-
-    <?php
-
-    function generateSpiralPattern($rows) {
-    for ($i = 1; $i <= $rows; $i++) {
-        for ($j = 1; $j <= $i; $j++) {
-            echo chr($j + 64); // Convert number to uppercase character (A = 65)
+ <?php
+$rows = 5;
+function generateSpiralPattern($rows) {
+    
+        
+        for ($i = 2; $i <= $rows; $i++) {
+            for ($j = 1; $j <= $i; $j++) {
+                echo chr($j + 64); 
+                if ($j < $i) {
+                    echo " "; 
+                }
+            }
+            echo "<br>"; 
         }
-        echo "<br>"; // New line after each row
+        
+    for ($i = $rows; $i >= 1; $i--) {
+        for ($j = 1; $j <= $i; $j++) {
+            echo chr($j + 64); 
+            if ($j < $i) {
+                echo " "; 
+            }
+        }
+        echo "<br>"; 
     }
     }
-    $rows = 5;
+    
 
-    generateSpiralPattern($rows);
 
-    ?>
+generateSpiralPattern($rows);
+
+?>
+
 
