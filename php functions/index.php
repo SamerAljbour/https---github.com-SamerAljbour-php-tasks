@@ -70,6 +70,7 @@ echo "<br>";
 echo "<br>";
 echo "<br>";
 $num =407 ;
+// echo count($num);
 function checkIfArmStronge ($num){
 $check = $num;
     $sum = 0;
@@ -77,7 +78,7 @@ $check = $num;
     while ($check != 0) {
 
     $digit =$check % 10;
-    $sum +=($digit * $digit *$digit) ;
+    $sum +=pow($digit, strlen($num)) ;
     $check = $check /10;
     }
    
