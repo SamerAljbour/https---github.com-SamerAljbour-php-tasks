@@ -2,7 +2,9 @@
 <?php 
 echo "<br>";
 echo "<br>";
-$number =5 ;
+$number =49 ;
+echo $number % 2 ;
+echo  $number % 3;
 function checkIfPrime ($number){
     if($number % 2 !== 0 && $number % 3 !== 0)
     echo "is prime";

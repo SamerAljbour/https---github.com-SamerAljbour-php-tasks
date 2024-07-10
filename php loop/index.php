@@ -25,23 +25,22 @@ echo "<br>";
 
 $n = 5;
 
-
 for ($i = 0; $i < $n; $i++) {
-
-    for ($j = 0; $j < $n; $j++) {
-        if ($j < $n - $i - 1) {  
-            echo 'A ';
+    // i=2
+    for ($j = 0; $j < $n; $j++) { 
+        if ($j < $n - $i - 1) {  // 0 < 2
+        echo 'A ';
         } else {
             echo chr(65 + $i) . ' ';
         }
     }
-    
+
     echo "<br>";
 }
 
-// <!-- #Q4 -->
 
 ?>
+ <!-- #Q4 -->
 <?php
 echo "<br>";
 echo "<br>";
