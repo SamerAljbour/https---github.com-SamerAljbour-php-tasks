@@ -206,7 +206,16 @@ echo "<br>";
 <?php 
 echo "<br>";
 echo "<br>";
-echo(rand(11,20));
+$current;
+$array = array();
+for($i= 0 ; $i < 10 ; $i++){
+    $current =rand(11,20);
+    $array[] = $current;
+    for($j = 0 ; $j < count($array)  ; $j++)
+    if($array[$i] !== $current)
+    $array[]= $current;
+}
+print_r($array);
 echo "<br>";
 echo "<br>";
 ?>
