@@ -270,7 +270,7 @@ $number = str_split($number);
 $newNumber =array();
 function floorNumber($number , $prec , $sep){
 for($i = 0 ; $i < count($number)  ;$i++){
-    if(is_numeric($number[$i])){
+    if(!is_numeric($number[$i])){
         $number[$i] = $sep;
         break;
     }
