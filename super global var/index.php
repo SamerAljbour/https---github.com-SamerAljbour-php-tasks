@@ -1,12 +1,14 @@
+
+<!-- #Q1 -->
 <?php 
 
-echo "<form method='GET'>
+echo "<form method='POST'>
 name :<input type='text' name='name'> <br>
 email :<input type='text' name='email'><br>
 <button type='submit' style = 'margin-left: 45px ;width: 11%' >go</button>
 </form>";
-$name = $_GET["name"];
-$email = $_GET["email"];
+$name = $_POST["name"];
+$email = $_POST["email"];
 echo " the name is $name , the email is $email";
 echo "<br>";
 echo "<br>";
@@ -45,7 +47,7 @@ echo "<form method='GET'>
     $num2 =$_GET["num2"];
     $op =$_GET["op"];
     $result;
-    switch(true){
+    switch($op){
         case "*":
             $result= $num1 * $num2 ;
             break;
@@ -79,14 +81,14 @@ if (!isset($_SESSION['toDoList'])) {
 }
 
 $toDoList = $_SESSION['toDoList'];
-if (isset($_GET['listItem']) && !empty($_GET['listItem'])) {
-    $input = $_GET['listItem'];
+if (isset($_POST['listItem']) && !empty($_POST['listItem'])) {
+    $input = $_POST['listItem'];
     $toDoList[] = $input; 
 
     $_SESSION['toDoList'] = $toDoList; 
 }
 
-echo "<form method='GET'>
+echo "<form method='POST'>
 <input type='text' name='listItem'>
 <button type='submit' >add</button>
 </form>";
@@ -101,6 +103,7 @@ echo "<ul>";
     echo "</ul>";
     echo "</div>";
     session_write_close();
+    // header("Location:http://127.0.0.1/PHP%20tasks/super%20global%20var/index.php/listitem="); 
     ?>
 <!-- #Q5 -->
 <?php 
@@ -120,14 +123,13 @@ echo "<br>";
 echo "------------------------------------------";
 echo "<br>";
 echo "<br>";
-$empty;
-$starttime = microtime(true); 
-for($i= 0 ; $i<100; $i++)
-$empty=0;
-$endtime = microtime(true);
+
+
 echo "<br>";
-printf("Page loaded in %f seconds", $endtime - $starttime );
-echo "<br>";    
+
+echo $today = date("H:i:s");
+echo "<br>"; 
+
     
     ?>
 <!-- #Q7 -->
@@ -136,26 +138,19 @@ echo "------------------------------------------";
 echo "<br>";
 echo "<br>";
 
-// Set session cookie parameters to expire at the end of the browser session
-session_set_cookie_params([
-    'lifetime' => 0, // 0 means the cookie expires at the end of the session (browser close)
-]);
 
-// Start or resume the session
+
 session_start();
 
-// Initialize the refresh count if not set
 if (!isset($_SESSION["refreshed_round"])) {
     $_SESSION["refreshed_round"] = 0;
 }
 
-// Increment the refresh count
 $_SESSION["refreshed_round"]++;
 
-// Close the session (write session data and close it)
 session_write_close();
 
-// Display the refresh count
+
 echo "User refreshed: " . $_SESSION["refreshed_round"];
 
 echo "<br>";    
@@ -194,7 +189,8 @@ echo "<br>";
 </script>
 <!-- repeate -->
 <?php
-echo "<script>var x = Number(localStorage.getItem('views'));
+echo "<script>
+var x = Number(localStorage.getItem('views'));
 (x) ? localStorage.setItem('views' , x+1) : localStorage.setItem('views' , 1);
 </script>";
 
@@ -211,10 +207,9 @@ echo "<br>";
 
 
 $cookie_name = "user";
-// setcookie($cookie_name ,"samer", time() +(86400 + 3600),"/",
-//"http://127.0.0.1/PHP%20tasks/super%20global%20var/index.php?listItem=",false,true );
+// setcookie($cookie_name ,"samer", time() +(86400 + 3600),"/","http://127.0.0.1/PHP%20tasks/super%20global%20var/index.php?listItem=",false,true );
 
-setcookie($cookie_name, "", time() - 3600, "/");
+setcookie($cookie_name, "", time() - 1, "/");
 
 
 setcookie($cookie_name, "samer", time() + 3600, "/"); 
