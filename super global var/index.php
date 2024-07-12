@@ -86,6 +86,7 @@ if (isset($_POST['listItem']) && !empty($_POST['listItem'])) {
     $toDoList[] = $input; 
 
     $_SESSION['toDoList'] = $toDoList; 
+    header("Location: " . $_SERVER['PHP_SELF']);
 }
 
 echo "<form method='POST'>
