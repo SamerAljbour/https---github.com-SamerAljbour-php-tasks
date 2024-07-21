@@ -20,7 +20,7 @@ try {
   echo $sql . "<br>" . $e->getMessage();
 }
 
-echo $id
+
 ?>
 
 <!DOCTYPE html>

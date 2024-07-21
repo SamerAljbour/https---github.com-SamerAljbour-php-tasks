@@ -7,15 +7,6 @@ $id = intval($_GET['id']);
 $sql = "SELECT id, name, address, salary FROM employee_details where id= $id";
 
 ?>
-<?php 
-$id = $_GET['id'];
-$name = $_GET['name'];
-$address = $_GET['address'];
-$salary = $_GET['salary'];
-
-$sql = "UPDATE employee_details SET name='$name' , address='$address' ,salary = '$salary' WHERE id=$id";
-$conn->exec($sql);
-?>
 
 
 <!DOCTYPE html>

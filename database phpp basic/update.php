@@ -19,7 +19,7 @@ $data['salary'] = $_POST['salaryUP'];
 else
 $_POST['salaryUP']="";
 
-// Assuming $pdo is your PDO instance and $data is an associative array
+
 $sql = "UPDATE employee_details SET name = :name, address = :address, salary = :salary WHERE id = :id";
 
 $stmt = $conn->prepare($sql);
@@ -87,7 +87,7 @@ $stmt->execute();
       </div>
       
       <button type="submit" class="btn btn-primary">update
-      <a href="view_employee.php?id=<?= $data['name'] ?>&id=<?= $data['address']?>&id=<?= $data['salary']?>"></a>
+      
       </button>
     </form>
     <script
