@@ -4,8 +4,34 @@ $id = $_GET['id'];
 $sql = "SELECT * FROM employee_details WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->execute([$id]);
+$data = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
+if(isset($_POST['nameUP']))
+$data['name'] = $_POST['nameUP'];
+else
+$_POST['nameUP']="";
+if(isset($_POST['addressUP']))
+$data['address'] = $_POST['addressUP'];
+else
+$_POST['addressUP']="";
+if(isset($_POST['salaryUP']))
+$data['salary'] = $_POST['salaryUP'];
+else
+$_POST['salaryUP']="";
 
+// Assuming $pdo is your PDO instance and $data is an associative array
+$sql = "UPDATE employee_details SET name = :name, address = :address, salary = :salary WHERE id = :id";
+
+$stmt = $conn->prepare($sql);
+
+// Bind the parameters
+$stmt->bindParam(':name', $data['name']);
+$stmt->bindParam(':address', $data['address']);
+$stmt->bindParam(':salary', $data['salary']);
+$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+// Execute the statement
+$stmt->execute();
 
 ?>
 
@@ -28,14 +54,14 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
     <title>Document</title>
   </head>
   <body>
-    <form method="POST" action="view_employee.php?id=<?= $data['id'] ?>&name=<?= $data['name'] ?>&address=<?= $data['address']?>&salary=<?= $data['salary']?>">
+    <form method="POST" action="">
       <div class="mb-3">
         <label for="exampleInputFirstName1" class="form-label">Name</label>
         <input
           type="text"
           class="form-control"
           id="exampleInputFirstName1"
-          name="name"
+          name="nameUP"
           value="<?= htmlspecialchars($data['name'])?>"
         />
       </div>
@@ -45,7 +71,7 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
           type="text"
           class="form-control"
           id="exampleInputPassword1"
-          name="address"
+          name="addressUP"
           value="<?= htmlspecialchars($data['address'])?>"
         />
       </div>
@@ -55,7 +81,7 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
           type="text"
           class="form-control"
           id="exampleInputPassword1"
-          name="salary"
+          name="salaryUP"
           value="<?= ($data['salary'])?>"
         />
       </div>
