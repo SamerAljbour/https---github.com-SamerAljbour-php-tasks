@@ -58,7 +58,7 @@ try {
               <td><?= $row['address'] ?></td>
               <td><?= $row['salary'] ?></td>
               <td>
-              <a href="view_employee.php?id=<?= $row['id'] ?>" class="btn btn-primary">View</a>
+              <a href="viewUser.php?id=<?= htmlspecialchars($row['id']) ?>" class="btn btn-primary">View</a>
               <a href="update.php?id=<?= $row['id'] ?>" class="btn btn-success">update</a>
               <a href="view.php?id=<?= $row['id'] ?>" class="btn btn-danger">delete</a>
               
