@@ -24,26 +24,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $flag = true;
     // validation
     if (empty($fullName) || !preg_match($fullNameRegx, $fullName)) {
-        $fullNameErr = "Name is required and must be 4 words with only alphabetic characters.";
+        // $fullNameErr = "Name is required and must be 4 words with only alphabetic characters.";
         $flag = false;
     }
     if (empty($email) || !preg_match($emailRegx, $email)) {
-        $emailErr = "should be a vaild email like : example@example.com";
+        // $emailErr = "should be a vaild email like : example@example.com";
         $flag = false;
     }
     if (empty($mobile) || !preg_match($mobileRegx, $mobile)) {
-        $moblieErr = "should be a 10 digits like : 07XXXXXX";
+        // $moblieErr = "should be a 10 digits like : 07XXXXXX";
         $flag = false;
     }
     if (empty($password) || !preg_match($passwordRegx, $password)) {
-        $passwordErr = "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one digit, and one special character.";
+        // $passwordErr = "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one digit, and one special character.";
         $flag = false;
     }
     if($password !== $confirmPassword){
-        $confirmPasswordErr="password not matched";
+        // $confirmPasswordErr="password not matched";
         $flag = false;
     }
-    echo $flag ? "true" : "false";
+
     if (isset($profilePic)) {
         if (count($_FILES) > 0) {
             
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     
 }}
-// echo $flag ? "true" : "false";
+
 
 if($flag){
     
@@ -192,37 +192,37 @@ button:hover {
     <div class="signup-container">
         <div class="form-container">
             <h2>Sign Up</h2>
-            <form action="" method="POST" enctype="multipart/form-data" >
+            <form action="" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()" >
                 <div class="input-group">
                     <label for="full-name">Full Name</label>
                     <input type="text" id="full-name" name="full-name" >
                 </div>
-                <span><?php echo $fullNameErr ?></span>
+                <span id="fullNameErr"><?php echo $fullNameErr ?></span>
                 <div class="input-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-                <span><?php echo $emailErr ?></span>
+                <span id="emailErr"><?php echo $emailErr ?></span>
                 <div class="input-group">
                     <label for="mobile">Mobile</label>
                     <input type="tel" id="mobile" name="mobile" >
                 </div>
-                <span><?php echo $moblieErr ?></span>
+                <span id="mobileErr"><?php echo $moblieErr ?></span>
                 <div class="input-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" >
+                    <span id = "passwordErr"><?php echo $passwordErr ?></span>
                 </div>
-                <span><?php echo $passwordErr ?></span>
                 <div class="input-group">
                     <label for="confirm-password">Confirm Password</label>
                     <input type="password" id="confirm-password" name="confirm-password" >
+                    <span id="confirmPasswordErr"><?php echo $confirmPasswordErr ?></span>
                 </div>
-                <span><?php echo $confirmPasswordErr ?></span>
                 <div class="input-group">
                     <label for="profile-picture">Profile Picture</label>
                     <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
                 </div>
-                <span><?php echo $profilePicErr ?></span>
+                <span id="profilePicErr"><?php echo $profilePicErr ?></span>
                 <div class="image-preview">
                     <img id="image-preview" src="" alt="Image Preview" />
                 </div>
@@ -230,6 +230,66 @@ button:hover {
             </form>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        function validateForm() {
+            let valid = true;
+
+            // Clear previous error messages
+            document.getElementById("fullNameErr").innerHTML = "";
+            document.getElementById("emailErr").innerHTML = "";
+            document.getElementById("mobileErr").innerHTML = "";
+            document.getElementById("passwordErr").innerHTML = "";
+            document.getElementById("confirmPasswordErr").innerHTML = "";
+            document.getElementById("profilePicErr").innerHTML = "";
+
+            // Validate full name
+            let fullName = document.getElementById("full-name").value.trim();
+            let fullNamePattern = /^[a-zA-Z]+ [a-zA-Z]+ [a-zA-Z]+ [a-zA-Z]+$/;
+            if (fullName === "" || !fullNamePattern.test(fullName)) {
+                document.getElementById("fullNameErr").innerHTML = "Name is required and must be 4 words with only alphabetic characters.";
+                valid = false;
+            }
+
+            // Validate email
+            let email = document.getElementById("email").value.trim();
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (email === "" || !emailPattern.test(email)) {
+                document.getElementById("emailErr").innerHTML = "1Should be a valid email like: example@example.com";
+                valid = false;
+            }
+
+            // Validate mobile
+            let mobile = document.getElementById("mobile").value.trim();
+            let mobilePattern = /^\d{10}$/;
+            if (mobile === "" || !mobilePattern.test(mobile)) {
+                document.getElementById("mobileErr").innerHTML = "Should be a 10 digits like: 07XXXXXX";
+                valid = false;
+            }
+
+            // Validate password
+            let password = document.getElementById("password").value.trim();
+            let passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (password === "" || !passwordPattern.test(password)) {
+                document.getElementById("passwordErr").innerHTML = "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one digit, and one special character.";
+                valid = false;
+            }
+
+            // Validate confirm password
+            let confirmPassword = document.getElementById("confirm-password").value.trim();
+            if (password !== confirmPassword) {
+                document.getElementById("confirmPasswordErr").innerHTML = "Passwords do not match";
+                valid = false;
+            }
+
+            // Validate profile picture
+            let profilePic = document.getElementById("profile-picture").files[0];
+            if (!profilePic) {
+                document.getElementById("profilePicErr").innerHTML = "Profile picture is required";
+                valid = false;
+            }
+
+            return valid;
+        }
+    </script>
 </body>
 </html>

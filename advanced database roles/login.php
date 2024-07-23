@@ -11,11 +11,11 @@ if($_SERVER["REQUEST_METHOD"] =="POST"){
     $password= isset($_POST['password'])? $_POST['password']:"" ;
     $flag = true;
     if(empty($email) ){
-        $emailErr ="can not be empty ";
+        // $emailErr ="can not be empty ";
         $flag = false;
     }
     if(empty($password)){
-        $passwordErr ="can not be empty";
+        // $passwordErr ="can not be empty";
         $flag = false;
     }
 }
@@ -137,20 +137,51 @@ button:hover {
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form action="" method="POST">
+        <form action="" method="POST" onsubmit=" return validateForm()" >
             <div class="input-group">
-                <label for="username">Username</label>
-                <input type="email" id="username" name="email" >
-                <span><?php echo $emailErr ?></span>
+                <label for="username">Email</label>
+                <input type="email" id="email" name="email" >
+                <span id="emailErr"><?php echo $emailErr ?></span>
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" >
-                <span><?php echo $passwordErr ?></span>
+                <span id="passwordErr"><?php echo $passwordErr ?></span>
             </div>
             <span><?php echo $error?></span>
-            <button type="submit">Login</button>
+            <button type="submit" id="loginForm" >Login</button>
         </form>
     </div>
+    <script>
+       function validateForm() {
+    let valid = true;
+
+    // Clear previous error messages
+    document.getElementById("emailErr").innerHTML = "";
+    document.getElementById("passwordErr").innerHTML = "";
+
+    // Validate email
+    let email = document.getElementById("email").value.trim(); // Corrected ID
+    let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/; // Corrected regex
+    if (email === "") {
+        document.getElementById("emailErr").innerHTML = "Email is required";
+        valid = false;
+    } else if (!emailPattern.test(email)) {
+        document.getElementById("emailErr").innerHTML = "Invalid email format";
+        valid = false;
+    }
+
+    // Validate password
+    let password = document.getElementById("password").value.trim();
+    if (password === "") {
+        document.getElementById("passwordErr").innerHTML = "Password is required";
+        valid = false;
+    }
+
+    return valid;
+}
+
+    
+    </script>
 </body>
 </html>
