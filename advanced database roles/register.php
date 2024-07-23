@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mobile = isset($_POST['mobile'])? $_POST['mobile'] : '';
     $password = isset($_POST['password'])? $_POST['password'] : '';
     $confirmPassword = isset($_POST['confirm-password'])? $_POST['confirm-password'] : '';
-    $profilePic = isset($_POST['profile-picture'])? $_POST['profile-picture'] : '';
+    $profilePic = isset($_FILES['profile-picture'])? $_FILES['profile-picture'] : '';
     $flag = true;
     // validation
     if (empty($fullName) || !preg_match($fullNameRegx, $fullName)) {
@@ -45,33 +45,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     echo $flag ? "true" : "false";
     if (isset($profilePic)) {
-        
-        $filename = $_FILES["profile-picture"]["name"];
-        $tempname = $_FILES["profile-picture"]["tmp_name"];
-        $folder = "./image/" . $filename;
+        if (count($_FILES) > 0) {
+            
+                $imgData = file_get_contents($_FILES['profile-picture']['tmp_name']);
+                $imgType = $_FILES['profile-picture']['type'];
+;
     }else
     $flag = false;
     
     
     
-}
-echo $flag ? "true" : "false";
+}}
+// echo $flag ? "true" : "false";
 
 if($flag){
     
     try {
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO users (User_image ,Name, Email,password,date_created,Phone_number , role_id) 
-        VALUES ( :filename ,:fullName, :email,:password ,CURDATE() ,:mobile ,2)";
+        $sql = "INSERT INTO users (imageData, imageType, Name, Email, password, date_created, Phone_number, role_id) 
+                    VALUES (:imageData, :imageType, :fullName, :email, :password, CURDATE(), :mobile, 2)";
         $stmt = $conn->prepare($sql);
-        $stmt->bindparam(":filename" , $filename);
+        $stmt->bindParam(":imageData", $imgData, PDO::PARAM_LOB);
+        $stmt->bindParam(":imageType", $imgType);
         $stmt->bindparam(":fullName" , $fullName);
         $stmt->bindparam(":email" , $email);
         $stmt->bindparam(":password" , $password);
         $stmt->bindparam(":mobile" , $mobile);
         $stmt -> execute();
         session_start();
-        $_SESSION['$ilename'] = $filename;
+        // $_SESSION['$ilename'] = $filename;
         $_SESSION['email'] = $email;
         $_SESSION['role'] = 2;
         session_write_close();

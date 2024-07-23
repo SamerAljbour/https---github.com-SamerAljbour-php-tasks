@@ -1,11 +1,15 @@
 <?php
 include './db_connection.php';
-$id = $_GET['id'];
-$sql = "SELECT * FROM employee_details WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->execute([$id]);
-$data = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-$data = $stmt->fetch(PDO::FETCH_ASSOC);
+$id;
+if(isset($_GET['id'])){
+  $id = $_GET['id'];
+  
+  $sql = "SELECT * FROM employee_details WHERE id = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$id]);
+  $data = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+  $data = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 if(isset($_POST['nameUP']))
 $data['name'] = $_POST['nameUP'];
 else

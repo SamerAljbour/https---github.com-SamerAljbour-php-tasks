@@ -5,21 +5,21 @@ $password = "";
 $dbname = "Employees";
 
 include 'db_connection.php';
+if(isset($id)){
 $id=$_GET['id'];
 try {
-  // set the PDO error mode to exception
+
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  // sql to delete a record
   $sql = "DELETE FROM employee_details WHERE id=$id";
 
-  // use exec() because no results are returned
+
   $conn->exec($sql);
 
 } catch(PDOException $e) {
   echo $sql . "<br>" . $e->getMessage();
 }
-
+}
 
 ?>
 
@@ -58,7 +58,7 @@ try {
               <td><?= $row['address'] ?></td>
               <td><?= $row['salary'] ?></td>
               <td>
-              <a href="viewUser.php?id=<?= htmlspecialchars($row['id']) ?>" class="btn btn-primary">View</a>
+              <a href="view_employee.php?id=<?= htmlspecialchars($row['id']) ?>" class="btn btn-primary">View</a>
               <a href="update.php?id=<?= $row['id'] ?>" class="btn btn-success">update</a>
               <a href="view.php?id=<?= $row['id'] ?>" class="btn btn-danger">delete</a>
               

@@ -1,5 +1,15 @@
 <?php 
 include './db_connection.php';
+session_start();
+if($_SESSION['role'] == 2){ 
+  header("Location: http://127.0.0.1/PHP%20tasks/advanced%20database%20roles/welcome.php");
+  
+}
+if($_SESSION['role'] == "")
+header("Location: http://127.0.0.1/PHP%20tasks/advanced%20database%20roles/home.php");
+echo $_SESSION['role'] ;
+$id =0;
+if(isset($_GET['id']))
 $id = intval($_GET['id']);
 // delete section
 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -38,18 +48,19 @@ $conn->exec($sql);
         </tr>
       </thead>
       <?php
-      $sql = "SELECT id, User_image,Name , Email, date_created , Phone_number FROM users";
+      $sql = "SELECT id,imageData,imageType,Name , Email, date_created , Phone_number FROM users";
       ?>
       <tbody>
         <?php foreach($conn->query($sql) as $row): ?>
           <tr>
               <th scope="row"><?= $row['id'] ?></th>
-              <td>
-                <?php if (!empty($row['User_image'])): ?>
-                    <img src="data:image/jpg;charset=utf8;base64,<?= base64_encode($row['User_image']); ?>" alt="User Image" />
-                <?php else: ?>
-                    <img src="./def.png" alt="Default Image" />
-                <?php endif; ?></td>
+              
+              <td><?php 
+              if (!empty($row['imageData'])) {
+                echo '<img src="data:' . htmlspecialchars($row['imageType']) . ';base64,' . base64_encode($row['imageData']) . '" alt="User Image" width="100px">';
+               } else {
+                echo '<img src="./def.png" alt="Default Image">';
+              } ?></td>
               <td><?= $row['Name'] ?></td>
               <td><?= $row['Email'] ?></td>
               <td><?= $row['date_created'] ?></td>
@@ -66,7 +77,9 @@ $conn->exec($sql);
         <?php endforeach; ?>
       </tbody>
     </table>
-
+              <button type="button" class ="btn btn-danger"> 
+              <a href="http://127.0.0.1/PHP%20tasks/advanced%20database%20roles/login.php?id=<?= $row['id'] ?>">logout</a>
+              </button>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

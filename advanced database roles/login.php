@@ -2,6 +2,10 @@
 include "./db_connection.php";
 $flag = false;
 $error='';
+$passwordErr = '' ;
+$emailErr ='';
+session_start();
+session_destroy();
 if($_SERVER["REQUEST_METHOD"] =="POST"){
     $email= isset($_POST['email'])? $_POST['email']:"" ;
     $password= isset($_POST['password'])? $_POST['password']:"" ;
@@ -32,7 +36,7 @@ if($flag){
             intval($val["role_id"]) == 2 ?header("Location: http://127.0.0.1/PHP%20tasks/advanced%20database%20roles/welcome.php") : header("Location: http://127.0.0.1/PHP%20tasks/advanced%20database%20roles/admin%20page.php/");; 
     }
     else 
-    $error = "invaild";
+    $error = "invaild email or password";
     }
 }
 
@@ -59,6 +63,9 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+}
+span {
+    color:red;
 }
 
 .login-container {
@@ -134,10 +141,12 @@ button:hover {
             <div class="input-group">
                 <label for="username">Username</label>
                 <input type="email" id="username" name="email" >
+                <span><?php echo $emailErr ?></span>
             </div>
             <div class="input-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" >
+                <span><?php echo $passwordErr ?></span>
             </div>
             <span><?php echo $error?></span>
             <button type="submit">Login</button>

@@ -1,12 +1,33 @@
 <?php 
 include './db_connection.php';
+session_start();
+if($_SESSION['role'] == 2){ 
+  header("Location: http://127.0.0.1/PHP%20tasks/advanced%20database%20roles/welcome.php");
+  
+}
+if($_SESSION['role'] == "") {
+  header("Location: http://127.0.0.1/PHP%20tasks/advanced%20database%20roles/home.php");
+
+}
 $id = intval($_GET['id']);
-$sql = "SELECT id, User_image,Name , Email, date_created , Phone_number FROM users WHERE id = $id";
-$stmt =$conn->query($sql);
-$result =$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 
+$sql = "SELECT id, imageData, imageType, Name, Email, date_created, Phone_number FROM users WHERE id = :id";
+$stmt = $conn->prepare($sql);
 
+
+$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+
+$stmt->execute();
+
+$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// header("Content-type: " . $result["imageType"]);
+// echo $result["imageData"];
+// header("Content-type: " . $row["imageType"]);
+//     echo $row["imageData"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,10 +56,16 @@ $result =$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </tr>
       </thead>
       <tbody>
-        <?php foreach($result as $row): ?>
+        <?php foreach($row as $row): ?>
           <tr>
               <th scope="row"><?= $row['id'] ?></th>
-              <td><?= $row['Name'] ?></td>
+              
+              <td><?php 
+              if (!empty($row['imageData'])) {
+                echo '<img src="data:' . htmlspecialchars($row['imageType']) . ';base64,' . base64_encode($row['imageData']) . '" alt="User Image" width="100px">';
+               } else {
+                echo '<img src="./def.png" alt="Default Image">';
+              } ?></td>
               <td><?= $row['Name'] ?></td>
               <td><?= $row['Email'] ?></td>
               <td><?= $row['date_created'] ?></td>

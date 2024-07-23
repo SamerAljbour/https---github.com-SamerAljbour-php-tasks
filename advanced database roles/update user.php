@@ -1,5 +1,8 @@
 <?php
+//add sesstion to every page
+//js validation
 include './db_connection.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $id = $_GET['id'];
 $sql = "SELECT * FROM users WHERE id = ?";
 $stmt = $conn->prepare($sql);
@@ -23,10 +26,10 @@ $data['password'] = $_POST['passwordUP'];
 else
 $_POST['passwordUP']="";
 
-
 $sql = "UPDATE users SET Name = :Name, Email = :Email, Phone_number = :Phone_number,password = :password WHERE id = :id";
 
 $stmt = $conn->prepare($sql);
+
 
 // Bind the parameters
 $stmt->bindParam(':Name', $_POST['nameUP']);
@@ -37,6 +40,8 @@ $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
 // Execute the statement
 $stmt->execute();
+header("Location: http://127.0.0.1/PHP%20tasks/advanced%20database%20roles/admin%20page.php"); 
+}
 
 ?>
 
@@ -101,10 +106,10 @@ $stmt->execute();
           value="<?= ($data['password'])?>"
         />
       </div>
+      <button type="submit" class="btn btn-primary">Update</button>
       
-      <button type="submit" class="btn btn-primary">update
       
-      </button>
+     
     </form>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

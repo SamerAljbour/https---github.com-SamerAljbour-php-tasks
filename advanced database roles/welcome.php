@@ -12,8 +12,6 @@ if(intval($_SESSION['role']) == 2){
     $flagIsAdmin = true;
 }
 // echo "welcome " . (intval($_SESSION['role']) == 2 ? " user ".($_SESSION["fullName"]) : "no " )."<br>  your email is " . $_SESSION['email'] ;
-if($flagIsAdmin){
-    
-}
+
 ?>
 
