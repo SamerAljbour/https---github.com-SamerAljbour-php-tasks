@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokemon API</title>
+    <style>
+      #input {
+        margin-left: 2%;
+      }
+      .pokemonContainer {
+        margin: 2% 0 2% 2%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    </style>
+  </head>
+  <body>
+    <input
+      type="text"
+      placeholder="Search Pokemon name"
+      onkeyup="showPokemon()"
+      id="input"
+    />
+    <button type="button" id="button">Search</button>
+    <div class="pokemonContainer" id="pokemonContainer"></div>
+    <script>
+      function showPokemon() {
+        var input = document.getElementById("input").value;
+        var container = document.getElementById("pokemonContainer");
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            var response = JSON.parse(this.responseText);
+            container.innerHTML = "";
+
+            if (response.error) {
+              container.innerHTML = response.error;
+            } else {
+              response.forEach(function (pokemon) {
+                var div = document.createElement("div");
+                div.innerHTML = `<img src = "${pokemon.image}" alt = "" />
+                <p>${pokemon.name}</p>`;
+
+                // div.textContent = name;
+                container.appendChild(div);
+              });
+            }
+          } else {
+            container.innerHTML = this.responseText;
+          }
+        };
+        xmlhttp.open("GET", "pokemon.php?name=" + input, true);
+        xmlhttp.send();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube API</title>
+    <style>
+      #container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px; /* Add some gap between items */
+      }
+      .card {
+        border: 1px solid gray;
+        padding: 10px;
+      }
+      .youtubeImage {
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+      }
+      #searchStyle {
+        margin: 1% 0 1% 1%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="searchContainer">
+      <input type="text" placeholder="Enter the video name" id="searchStyle" />
+      <button type="button" id="searchButton" onclick="showVideo()">
+        Search
+      </button>
+    </div>
+    <div id="container"></div>
+    <script>
+      function showVideo() {
+        var input = document.getElementById("searchStyle").value; // Correctly get the input value
+        var container = document.getElementById("container");
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            var response = JSON.parse(this.responseText);
+            container.innerHTML = "";
+
+            if (response.error) {
+              container.innerHTML = response.error;
+            } else {
+              response.forEach(function (video) {
+                var div = document.createElement("div");
+                div.className = "card";
+                div.innerHTML = `
+                  <a href="${video.videoUrl}" target="_blank">
+                    <img src="${video.image}" alt="${video.title}" class="youtubeImage" />
+                    <p>${video.title}</p>
+                  </a>
+                `;
+                container.appendChild(div);
+              });
+            }
+          } else {
+            container.innerHTML = "Error: " + this.statusText;
+          }
+        };
+        xmlhttp.open(
+          "GET",
+          "index.php?search=" + encodeURIComponent(input),
+          true
+        );
+        xmlhttp.send();
+      }
+    </script>
+  </body>
+</html>
